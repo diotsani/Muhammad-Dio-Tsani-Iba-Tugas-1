@@ -7,6 +7,7 @@ using TMPro;
 public enum EnemyState { Generate, Spawn }
 public class EnemyManager : MonoBehaviour
 {
+    public ScoreManager scoreManager;
     
     public EnemyState state;
 
@@ -118,11 +119,14 @@ public class EnemyManager : MonoBehaviour
         {
             Vector2 worldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             RaycastHit2D hit2D = Physics2D.Raycast(worldPoint, Vector2.zero);
+
             if (hit2D.collider != null)
             {
                 if (hit2D.collider.tag == "Enemy")
                 {
                     //enemyList.Remove(enemyList[0]);
+                    scoreManager.getScore += 10;
+
                     Destroy(hit2D.collider.gameObject);
                     enemyDestroyed.Add(enemyList[0]);
                     hit2D.collider.gameObject.SetActive(false);

@@ -5,6 +5,7 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     public float speed;
+    public ScoreManager scoreManager;
     public EnemyManager enemyManager;
 
     // Start is called before the first frame update
@@ -24,8 +25,9 @@ public class Enemy : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Goal"))
         {
+            scoreManager.Life();
+
             enemyManager.enemyDestroyed.Add(enemyManager.enemyList[0]);
-            Debug.Log("Goal");
             Destroy(gameObject);
         }
     }
