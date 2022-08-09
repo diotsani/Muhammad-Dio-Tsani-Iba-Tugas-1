@@ -13,6 +13,9 @@ public class ScoreManager : MonoBehaviour
 
     public TMP_Text textScore;
     public int getScore;
+
+    public bool isGameOver;
+
     void Start()
     {
         deadPlayer = new List<GameObject>();
@@ -46,6 +49,7 @@ public class ScoreManager : MonoBehaviour
 
     public void GameOver()
     {
+        isGameOver = true;
         panelGameOver.SetActive(true);
         Time.timeScale = 0;
     }

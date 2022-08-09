@@ -18,17 +18,19 @@ public class Enemy : MonoBehaviour
     void Update()
     {
         transform.Translate(Vector3.down * (speed * Time.deltaTime));
-    }
 
-
-    public void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Goal"))
+        if (transform.position.y <= -5)
         {
             scoreManager.Life();
 
             enemyManager.enemyDestroyed.Add(enemyManager.enemyList[0]);
             Destroy(gameObject);
         }
+    }
+
+
+    public void OnCollisionEnter2D(Collision2D collision)
+    {
+        
     }
 }

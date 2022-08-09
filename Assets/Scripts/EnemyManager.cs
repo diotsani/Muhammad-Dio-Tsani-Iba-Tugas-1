@@ -7,23 +7,27 @@ using TMPro;
 public enum EnemyState { Generate, Spawn }
 public class EnemyManager : MonoBehaviour
 {
-    public ScoreManager scoreManager;
-    
     public EnemyState state;
 
+    public ScoreManager scoreManager;
+    public HumanManager humanManager;
+
+    [Header("Enemy")]
     public GameObject enemy;
     public List<GameObject> enemyList;
     public List<GameObject> enemyDestroyed;
-
     public int maxEnemy;
 
+    [Header("Spawn")]
     public Transform spawnArea;
     private Vector2 spawnAreaMax = new Vector2(8, 6);
     private Vector2 spawnAreaMin = new Vector2(-8, 6);
 
+    [Header("Timer")]
     public int spawnInterval = 1;
     private float timer;
 
+    [Header("Wave")]
     public TMP_Text textWave;
     public int amountWave;
 
@@ -36,10 +40,8 @@ public class EnemyManager : MonoBehaviour
         maxEnemy = Random.Range(3, 9);
         enemyList = new List<GameObject>();
         enemyDestroyed = new List<GameObject>();
-        //GenerateEnemy();
     }
 
-    // Update is called once per frame
     void Update()
     {
         DestroyEnemy();
@@ -54,16 +56,9 @@ public class EnemyManager : MonoBehaviour
             state = EnemyState.Spawn;
         }
 
-        //if(enemyList.Count == maxEnemy)
-        //{/
-        //enemyList.Remove(enemyList[0]);
-        //state = EnemyState.Spawn;
-        //}
-
         if (enemyDestroyed.Count >= 0 && state == EnemyState.Generate)
         {
-            //GenerateEnemy();
-            //state = EnemyState.Generate;
+            
         }
         else
             GenerateEnemy();
@@ -71,10 +66,18 @@ public class EnemyManager : MonoBehaviour
         if (enemyDestroyed.Count == maxEnemy)
         {
             RemoveAllEnemy();
+            humanManager.RemoveAllHuman();
+
             GenerateEnemy();
             state = EnemyState.Generate;
             amountWave += 1;
         }
+        //if(enemyList.Count == maxEnemy)
+        //{/
+        //enemyList.Remove(enemyList[0]);
+        //state = EnemyState.Spawn;
+        //}
+
         //if (enemyList.Count <= maxEnemy)
         //{
         //GenerateEnemy();
@@ -115,7 +118,7 @@ public class EnemyManager : MonoBehaviour
 
     public void DestroyEnemy()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && scoreManager.isGameOver == false)
         {
             Vector2 worldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             RaycastHit2D hit2D = Physics2D.Raycast(worldPoint, Vector2.zero);
@@ -124,18 +127,12 @@ public class EnemyManager : MonoBehaviour
             {
                 if (hit2D.collider.tag == "Enemy")
                 {
-                    //enemyList.Remove(enemyList[0]);
                     scoreManager.getScore += 10;
 
                     Destroy(hit2D.collider.gameObject);
                     enemyDestroyed.Add(enemyList[0]);
                     hit2D.collider.gameObject.SetActive(false);
                     Debug.Log("Enemy Destroy");
-                }
-
-                if (hit2D.collider.tag == "Human")
-                {
-                    Debug.Log("Dont Touch Me");
                 }
             }
         }
