@@ -2,8 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IRaycastable
+namespace Raycast
 {
-    void Interact();
+    public interface IRaycastable
+    {
+        void Interact();
 
+    }
 }
+
