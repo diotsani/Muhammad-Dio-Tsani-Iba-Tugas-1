@@ -2,7 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IHumanFactory
+namespace Human
 {
-    GameObject HumanFactoryMethod(int tag);
+    public interface IHumanFactory
+    {
+        GameObject HumanFactoryMethod(int tag);
+    }
 }
+
