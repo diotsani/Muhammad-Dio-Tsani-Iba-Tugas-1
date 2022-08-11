@@ -95,7 +95,7 @@ public class HumanManager : MonoBehaviour
 
             if (hit2D.collider != null)
             {
-                if (hit2D.collider.tag == "Human")
+                if (hit2D.collider.tag == "Humans")
                 {
                     scoreManager.GameOver();
                     Debug.Log("Dont Touch Me and You Lose");

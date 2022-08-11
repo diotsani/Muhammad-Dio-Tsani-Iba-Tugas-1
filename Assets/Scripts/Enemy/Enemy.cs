@@ -2,23 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class Enemy : MonoBehaviour, IRaycastable
 {
-    public float speed;
+    //public float speed;
     public ScoreManager scoreManager;
     public EnemyManager enemyManager;
 
-    // Start is called before the first frame update
     void Start()
     {
         
     }
 
-    // Update is called once per frame
     void Update()
     {
-        transform.Translate(Vector3.down * (speed * Time.deltaTime));
-
         if (transform.position.y <= -5)
         {
             scoreManager.Life();
@@ -28,9 +24,13 @@ public class Enemy : MonoBehaviour
         }
     }
 
-
-    public void OnCollisionEnter2D(Collision2D collision)
+    public void Interact()
     {
-        
+        scoreManager.getScore += 10;
+
+        Destroy(gameObject);
+        enemyManager.enemyDestroyed.Add(enemyManager.enemyList[0]);
+        gameObject.SetActive(false);
+        Debug.Log("Enemy Destroy");
     }
 }

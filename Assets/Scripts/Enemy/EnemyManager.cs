@@ -13,7 +13,7 @@ public class EnemyManager : MonoBehaviour
     public HumanManager humanManager;
 
     [Header("Enemy")]
-    public GameObject enemy;
+    public List<GameObject> enemy;
     public List<GameObject> enemyList;
     public List<GameObject> enemyDestroyed;
     public int maxEnemy;
@@ -110,7 +110,9 @@ public class EnemyManager : MonoBehaviour
             return;
         }
 
-        GameObject enemySpawn = Instantiate(enemy, new Vector3(position.x, position.y, enemy.transform.position.z), Quaternion.identity, spawnArea);
+        int randomEnemy = Random.Range(0, enemy.Count);
+
+        GameObject enemySpawn = Instantiate(enemy[randomEnemy], new Vector3(position.x, position.y, enemy[randomEnemy].transform.position.z), Quaternion.identity, spawnArea);
         enemySpawn.SetActive(true);
 
         enemyList.Add(enemySpawn);
@@ -125,7 +127,7 @@ public class EnemyManager : MonoBehaviour
 
             if (hit2D.collider != null)
             {
-                if (hit2D.collider.tag == "Enemy")
+                if (hit2D.collider.tag == "Enemys")
                 {
                     scoreManager.getScore += 10;
 
