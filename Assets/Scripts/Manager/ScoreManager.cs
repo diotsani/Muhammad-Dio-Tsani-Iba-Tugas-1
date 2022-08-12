@@ -8,6 +8,12 @@ namespace Manager
 {
     public class ScoreManager : MonoBehaviour
     {
+        public delegate void ScoreDelegate();
+        public static event ScoreDelegate OnPlayerEnd;
+        public static event ScoreDelegate OnPlayerScore;
+
+        GameManager game;
+
         public List<GameObject> lifePlayer;
         public List<GameObject> deadPlayer;
 
@@ -20,7 +26,15 @@ namespace Manager
 
         void Start()
         {
+            game = GameManager.Instance;
+
             deadPlayer = new List<GameObject>();
+        }
+
+        private void OnEnable()
+        {
+            GameManager.OnGameStarted += OnGameStarted;
+            GameManager.OnGameOver += OnGameOver;
         }
 
         void Update()
@@ -33,6 +47,16 @@ namespace Manager
             {
                 GameOver();
             }
+        }
+
+        void OnGameStarted()
+        {
+            Debug.Log("SM Play Game");
+        }
+
+        void OnGameOver()
+        {
+            Debug.Log("SM Game Over");
         }
 
         public void Life()
@@ -51,9 +75,11 @@ namespace Manager
 
         public void GameOver()
         {
-            isGameOver = true;
-            panelGameOver.SetActive(true);
-            Time.timeScale = 0;
+            OnPlayerEnd();
+
+            //isGameOver = true;
+            //panelGameOver.SetActive(true);
+            //Time.timeScale = 0;
         }
     }
 }

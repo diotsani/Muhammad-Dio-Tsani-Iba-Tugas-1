@@ -6,10 +6,17 @@ namespace Manager
 {
     public class GameManager : MonoBehaviour
     {
+        public delegate void GameDelegate();
+        public static event GameDelegate OnGameStarted;
+        public static event GameDelegate OnGameOver;
+
         public static GameManager Instance;
 
-        bool gameOver = true;
-        public bool GameOver { get { return gameOver; } }
+        bool isGameOver = true;
+        public bool GameOver { get { return isGameOver; } }
+
+        [Header("GameObject")]
+        public GameObject panelGameOver;
 
         private void Awake()
         {
@@ -17,7 +24,32 @@ namespace Manager
         }
         void Start()
         {
-            gameOver = false;
+            isGameOver = false;
+        }
+
+        private void OnEnable()
+        {
+            ScoreManager.OnPlayerEnd += OnPlayerEnd;
+        }
+
+        private void OnDestroy()
+        {
+            ScoreManager.OnPlayerEnd -= OnPlayerEnd;
+        }
+
+        void OnPlayerStart()
+        {
+            isGameOver = false;
+            Debug.Log("GM Play Game");
+        }
+
+        void OnPlayerEnd()
+        {
+            isGameOver = true;
+
+            panelGameOver.SetActive(true);
+            Time.timeScale = 0;
+            Debug.Log("GM Game Over");
         }
     }
 }
